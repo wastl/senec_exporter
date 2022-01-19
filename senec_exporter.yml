@@ -1,0 +1,5 @@
+senec_server: http://192.168.178.37/
+influx_server: 127.0.0.1
+influx_port: 8086
+influx_db: senec
+poll_interval: 1
