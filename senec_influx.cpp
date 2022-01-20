@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <influxdb.hpp>
+#include <glog/logging.h>
 
 #include "senec_influx.h"
 
@@ -13,6 +14,7 @@ int senec::write_influx(const std::string &server, int port, const std::string &
     long long ts = time_point_cast<nanoseconds>(system_clock::now()).time_since_epoch().count();
 
     int result;
+    std::string response;
 
     influxdb_cpp::server_info si(server, port, db);
     result = influxdb_cpp::builder()
@@ -22,9 +24,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("spannung", data.getBatterieSpannung())
             .field("temperatur", data.getBatterieTemperatur())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 
@@ -35,9 +38,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("batterie", data.getBatterieLeistung())
             .field("netz", data.getNetzLeistung())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 
@@ -48,9 +52,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("laden", data.getLaden())
             .field("entladen", data.getEntladen())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 
@@ -62,9 +67,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("strom", data.getGesamtstrom())
             .field("produktion", data.getProduktionGesamt())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 
@@ -74,9 +80,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("spannung", data.getMppt1Leistung())
             .field("strom", data.getMppt1Strom())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 
@@ -86,9 +93,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("spannung", data.getMppt2Leistung())
             .field("strom", data.getMppt2Strom())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 
@@ -98,9 +106,10 @@ int senec::write_influx(const std::string &server, int port, const std::string &
             .field("spannung", data.getMppt3Leistung())
             .field("strom", data.getMppt3Strom())
             .timestamp(ts)
-            .post_http(si);
+            .post_http(si, &response);
 
     if (result != 0) {
+        LOG(ERROR) << "Error while writing to InfluxDB: " << response;
         return result;
     }
 

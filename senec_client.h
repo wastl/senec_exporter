@@ -4,6 +4,7 @@
 
 #ifndef SENEC_EXPORTER_SENEC_CLIENT_H
 #define SENEC_EXPORTER_SENEC_CLIENT_H
+#include <functional>
 
 namespace senec {
     class SenecData {
@@ -47,172 +48,331 @@ namespace senec {
         double mppt2_strom, mppt2_spannung, mppt2_leistung;
         double mppt3_strom, mppt3_spannung, mppt3_leistung;
     public:
-        uint32_t getPvBegrenzung() const;
+        SenecData() {}
 
-        void setPvBegrenzung(uint32_t pvBegrenzung);
+        uint32_t getPvBegrenzung() const {
+            return pv_begrenzung;
+        }
 
-        double getAcLeistung() const;
+        void setPvBegrenzung(uint32_t pvBegrenzung) {
+            pv_begrenzung = pvBegrenzung;
+        }
 
-        void setAcLeistung(double acLeistung);
+        double getAcLeistung() const {
+            return ac_leistung;
+        }
 
-        double getFrequenz() const;
+        void setAcLeistung(double acLeistung) {
+            ac_leistung = acLeistung;
+        }
 
-        void setFrequenz(double frequenz);
+        double getFrequenz() const {
+            return frequenz;
+        }
 
-        double getAcSpannungR() const;
+        void setFrequenz(double frequenz) {
+            SenecData::frequenz = frequenz;
+        }
 
-        void setAcSpannungR(double acSpannungR);
+        double getAcSpannungR() const {
+            return ac_spannung_r;
+        }
 
-        double getAcSpannungS() const;
+        void setAcSpannungR(double acSpannungR) {
+            ac_spannung_r = acSpannungR;
+        }
 
-        void setAcSpannungS(double acSpannungS);
+        double getAcSpannungS() const {
+            return ac_spannung_s;
+        }
 
-        double getAcSpannungT() const;
+        void setAcSpannungS(double acSpannungS) {
+            ac_spannung_s = acSpannungS;
+        }
 
-        void setAcSpannungT(double acSpannungT);
+        double getAcSpannungT() const {
+            return ac_spannung_t;
+        }
 
-        double getAcStromR() const;
+        void setAcSpannungT(double acSpannungT) {
+            ac_spannung_t = acSpannungT;
+        }
 
-        void setAcStromR(double acStromR);
+        double getAcStromR() const {
+            return ac_strom_r;
+        }
 
-        double getAcStromS() const;
+        void setAcStromR(double acStromR) {
+            ac_strom_r = acStromR;
+        }
 
-        void setAcStromS(double acStromS);
+        double getAcStromS() const {
+            return ac_strom_s;
+        }
 
-        double getAcStromT() const;
+        void setAcStromS(double acStromS) {
+            ac_strom_s = acStromS;
+        }
 
-        void setAcStromT(double acStromT);
+        double getAcStromT() const {
+            return ac_strom_t;
+        }
 
-        double getAcLeistungR() const;
+        void setAcStromT(double acStromT) {
+            ac_strom_t = acStromT;
+        }
 
-        void setAcLeistungR(double acLeistungR);
+        double getAcLeistungR() const {
+            return ac_leistung_r;
+        }
 
-        double getAcLeistungS() const;
+        void setAcLeistungR(double acLeistungR) {
+            ac_leistung_r = acLeistungR;
+        }
 
-        void setAcLeistungS(double acLeistungS);
+        double getAcLeistungS() const {
+            return ac_leistung_s;
+        }
 
-        double getAcLeistungT() const;
+        void setAcLeistungS(double acLeistungS) {
+            ac_leistung_s = acLeistungS;
+        }
 
-        void setAcLeistungT(double acLeistungT);
+        double getAcLeistungT() const {
+            return ac_leistung_t;
+        }
 
-        double getBatterieSoc() const;
+        void setAcLeistungT(double acLeistungT) {
+            ac_leistung_t = acLeistungT;
+        }
 
-        void setBatterieSoc(double batterieSoc);
+        double getBatterieSoc() const {
+            return batterie_soc;
+        }
+
+        void setBatterieSoc(double batterieSoc) {
+            batterie_soc = batterieSoc;
+        }
 
         double getBatterieLeistung() const;
 
         void setBatterieLeistung(double batterieLeistung);
 
-        double getBatterieSpannung() const;
+        double getBatterieSpannung() const {
+            return batterie_spannung;
+        }
 
-        void setBatterieSpannung(double batterieSpannung);
+        void setBatterieSpannung(double batterieSpannung) {
+            batterie_spannung = batterieSpannung;
+        }
 
-        double getHausverbrauch() const;
+        double getHausverbrauch() const {
+            return hausverbrauch;
+        }
 
-        void setHausverbrauch(double hausverbrauch);
+        void setHausverbrauch(double hausverbrauch) {
+            SenecData::hausverbrauch = hausverbrauch;
+        }
 
-        double getPvLeistung() const;
+        double getPvLeistung() const {
+            return pv_leistung;
+        }
 
-        void setPvLeistung(double pvLeistung);
+        void setPvLeistung(double pvLeistung) {
+            pv_leistung = pvLeistung;
+        }
 
         double getNetzLeistung() const;
 
         void setNetzLeistung(double netzLeistung);
 
-        uint32_t getStatus() const;
 
-        void setStatus(uint32_t status);
+        uint32_t getStatus() const {
+            return status;
+        }
 
-        uint32_t getBetriebsstunden() const;
+        void setStatus(uint32_t status) {
+            SenecData::status = status;
+        }
 
-        void setBetriebsstunden(uint32_t betriebsstunden);
+        uint32_t getBetriebsstunden() const {
+            return betriebsstunden;
+        }
 
-        uint32_t getAnzahlBatterien() const;
+        void setBetriebsstunden(uint32_t betriebsstunden) {
+            SenecData::betriebsstunden = betriebsstunden;
+        }
 
-        void setAnzahlBatterien(uint32_t anzahlBatterien);
+        uint32_t getAnzahlBatterien() const {
+            return anzahl_batterien;
+        }
 
-        double getGesamtstrom() const;
+        void setAnzahlBatterien(uint32_t anzahlBatterien) {
+            anzahl_batterien = anzahlBatterien;
+        }
 
-        void setGesamtstrom(double gesamtstrom);
+        double getGesamtstrom() const {
+            return gesamtstrom;
+        }
 
-        double getEinspeisungGesamt() const;
+        void setGesamtstrom(double gesamtstrom) {
+            SenecData::gesamtstrom = gesamtstrom;
+        }
 
-        void setEinspeisungGesamt(double einspeisungGesamt);
+        double getEinspeisungGesamt() const {
+            return einspeisung_gesamt;
+        }
 
-        double getBezugGesamt() const;
+        void setEinspeisungGesamt(double einspeisungGesamt) {
+            einspeisung_gesamt = einspeisungGesamt;
+        }
 
-        void setBezugGesamt(double bezugGesamt);
+        double getBezugGesamt() const {
+            return bezug_gesamt;
+        }
 
-        double getVerbrauchGesamt() const;
+        void setBezugGesamt(double bezugGesamt) {
+            bezug_gesamt = bezugGesamt;
+        }
 
-        void setVerbrauchGesamt(double verbrauchGesamt);
+        double getVerbrauchGesamt() const {
+            return verbrauch_gesamt;
+        }
 
-        double getProduktionGesamt() const;
+        void setVerbrauchGesamt(double verbrauchGesamt) {
+            verbrauch_gesamt = verbrauchGesamt;
+        }
 
-        void setProduktionGesamt(double produktionGesamt);
+        double getProduktionGesamt() const {
+            return produktion_gesamt;
+        }
 
-        double getBatterieTemperatur() const;
+        void setProduktionGesamt(double produktionGesamt) {
+            produktion_gesamt = produktionGesamt;
+        }
 
-        void setBatterieTemperatur(double batterieTemperatur);
+        double getBatterieTemperatur() const {
+            return batterie_temperatur;
+        }
 
-        double getGehaeuseTemperatur() const;
+        void setBatterieTemperatur(double batterieTemperatur) {
+            batterie_temperatur = batterieTemperatur;
+        }
 
-        void setGehaeuseTemperatur(double gehaeuseTemperatur);
+        double getGehaeuseTemperatur() const {
+            return gehaeuse_temperatur;
+        }
 
-        double getMcuTemperatur() const;
+        void setGehaeuseTemperatur(double gehaeuseTemperatur) {
+            gehaeuse_temperatur = gehaeuseTemperatur;
+        }
 
-        void setMcuTemperatur(double mcuTemperatur);
+        double getMcuTemperatur() const {
+            return mcu_temperatur;
+        }
 
-        uint32_t getFanSpeed() const;
+        void setMcuTemperatur(double mcuTemperatur) {
+            mcu_temperatur = mcuTemperatur;
+        }
 
-        void setFanSpeed(uint32_t fanSpeed);
+        uint32_t getFanSpeed() const {
+            return fan_speed;
+        }
 
-        double getEinspeisung() const;
+        void setFanSpeed(uint32_t fanSpeed) {
+            fan_speed = fanSpeed;
+        }
 
-        double getBezug() const;
+        double getMppt1Strom() const {
+            return mppt1_strom;
+        }
 
-        double getMppt1Strom() const;
+        void setMppt1Strom(double mppt1Strom) {
+            mppt1_strom = mppt1Strom;
+        }
 
-        void setMppt1Strom(double mppt1Strom);
+        double getMppt1Spannung() const {
+            return mppt1_spannung;
+        }
 
-        double getMppt1Spannung() const;
+        void setMppt1Spannung(double mppt1Spannung) {
+            mppt1_spannung = mppt1Spannung;
+        }
 
-        void setMppt1Spannung(double mppt1Spannung);
+        double getMppt1Leistung() const {
+            return mppt1_leistung;
+        }
 
-        double getMppt1Leistung() const;
+        void setMppt1Leistung(double mppt1Leistung) {
+            mppt1_leistung = mppt1Leistung;
+        }
 
-        void setMppt1Leistung(double mppt1Leistung);
+        double getMppt2Strom() const {
+            return mppt2_strom;
+        }
 
-        double getMppt2Strom() const;
+        void setMppt2Strom(double mppt2Strom) {
+            mppt2_strom = mppt2Strom;
+        }
 
-        void setMppt2Strom(double mppt2Strom);
+        double getMppt2Spannung() const {
+            return mppt2_spannung;
+        }
 
-        double getMppt2Spannung() const;
+        void setMppt2Spannung(double mppt2Spannung) {
+            mppt2_spannung = mppt2Spannung;
+        }
 
-        void setMppt2Spannung(double mppt2Spannung);
+        double getMppt2Leistung() const {
+            return mppt2_leistung;
+        }
 
-        double getMppt2Leistung() const;
+        void setMppt2Leistung(double mppt2Leistung) {
+            mppt2_leistung = mppt2Leistung;
+        }
 
-        void setMppt2Leistung(double mppt2Leistung);
+        double getMppt3Strom() const {
+            return mppt3_strom;
+        }
 
-        double getMppt3Strom() const;
+        void setMppt3Strom(double mppt3Strom) {
+            mppt3_strom = mppt3Strom;
+        }
 
-        void setMppt3Strom(double mppt3Strom);
+        double getMppt3Spannung() const {
+            return mppt3_spannung;
+        }
 
-        double getMppt3Spannung() const;
+        void setMppt3Spannung(double mppt3Spannung) {
+            mppt3_spannung = mppt3Spannung;
+        }
 
-        void setMppt3Spannung(double mppt3Spannung);
+        double getMppt3Leistung() const {
+            return mppt3_leistung;
+        }
 
-        double getMppt3Leistung() const;
+        void setMppt3Leistung(double mppt3Leistung) {
+            mppt3_leistung = mppt3Leistung;
+        }
 
-        void setMppt3Leistung(double mppt3Leistung);
+        double getEinspeisung() const {
+            return einspeisung;
+        }
 
-        double getLaden() const;
+        double getBezug() const {
+            return bezug;
+        }
 
-        double getEntladen() const;
+        double getLaden() const {
+            return laden;
+        }
+
+        double getEntladen() const {
+            return entladen;
+        }
     };
 
-    senec::SenecData* query(const std::string& uri);
+    void query(const std::string& uri, const std::function<void(const SenecData&)>& handler);
 }
 
 #endif //SENEC_EXPORTER_SENEC_CLIENT_H

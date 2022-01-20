@@ -2,6 +2,7 @@
 #include <thread>
 #include <chrono>
 #include <yaml-cpp/yaml.h>
+#include <glog/logging.h>
 
 #include "senec_client.h"
 #include "senec_influx.h"
@@ -64,47 +65,25 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    google::InitGoogleLogging(argv[0]);
+
     config* cfg = load_config(argv[1]);
-    std::cout << "SENEC Server: " << cfg->senec_server << std::endl;
-    std::cout << "Influx Server: " << cfg->influx_server << std::endl;
-    std::cout << "Poll Interval: " << cfg->poll_interval << std::endl;
+    LOG(INFO) << "SENEC Server: " << cfg->senec_server;
+    LOG(INFO) << "Influx Server: " << cfg->influx_server;
+    LOG(INFO) << "Poll Interval: " << cfg->poll_interval;
 
     auto next = system_clock::now();
     while (true) {
         next += seconds(cfg->poll_interval);
         std::this_thread::sleep_until(next);
 
-        senec::SenecData *data = senec::query(cfg->senec_server);
+        senec::query(cfg->senec_server, [=](const senec::SenecData& data) {
+            LOG(INFO) << "SENEC Daten empfangen (Verbrauch: " << data.getHausverbrauch()
+                      << ", Produktion: " << data.getPvLeistung()
+                      << ", Ladestand: " << data.getBatterieSoc() <<")";
 
-        if (data == nullptr) {
-            std::cerr << "Keine Daten von SENEC-Anlage empfangen." << std::endl;
-            continue;
-        }
-
-        std::cout << "Aktuell:" << std::endl;
-        std::cout << "Hausverbrauch:      " << data->getHausverbrauch() << "W" << std::endl;
-        std::cout << "Netzleistung:       " << data->getNetzLeistung() << "W" << std::endl;
-        std::cout << "Batterieleistung:   " << data->getBatterieLeistung() << "W" << std::endl;
-        std::cout << "PV-Leistung:        " << data->getPvLeistung() << "W" << std::endl;
-
-        /*
-        std::cout << std::endl;
-        std::cout << "Betrieb:" << std::endl;
-        std::cout << "Gehäusetemperatur:  " << data->getGehaeuseTemperatur() << "°" << std::endl;
-        std::cout << "Batterietemperatur: " << data->getBatterieTemperatur() << "°" << std::endl;
-        std::cout << "MCU-Temperatur:     " << data->getMcuTemperatur() << "°" << std::endl;
-        std::cout << "Lüfter:             " << data->getFanSpeed() << "U/min" << std::endl;
-        std::cout << std::endl;
-        std::cout << "Gesamt:" << std::endl;
-        std::cout << "Hausverbrauch:      " << data->getVerbrauchGesamt() << "W" << std::endl;
-        std::cout << "Netzbezug:          " << data->getBezugGesamt() << "W" << std::endl;
-        std::cout << "Einspeisung:        " << data->getEinspeisungGesamt() << "W" << std::endl;
-        std::cout << "PV-Produktion:      " << data->getProduktionGesamt() << "W" << std::endl;
-         */
-
-        senec::write_influx(cfg->influx_server, cfg->influx_port, cfg->influx_db, *data);
-
-        delete data;
+            senec::write_influx(cfg->influx_server, cfg->influx_port, cfg->influx_db, data);
+        });
     }
 
     return 0;
